@@ -1,10 +1,4 @@
-FROM php:5.5-apache
-
-RUN a2enmod rewrite
-
-ENV APACHE_DOCUMENT_ROOT /var/www/html/web
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+FROM php:5.4-apache
 
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138 \
@@ -26,5 +20,11 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 04EE7237B7D453EC \
 RUN docker-php-ext-install xsl
 
 RUN pecl install apcu-4.0.11 && docker-php-ext-enable apcu
+
+RUN a2enmod rewrite
+
+ENV APACHE_DOCUMENT_ROOT /var/www/html/web
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 COPY php.ini /usr/local/etc/php
