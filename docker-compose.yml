@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  php:
+    build: ./.docker/php
+    ports:
+      - "8000:80"
+    tty: true
+    volumes:
+      - .:/var/www/html:delegated
+    working_dir: /var/www/html
